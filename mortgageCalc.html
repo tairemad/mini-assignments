@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mortgage Calculator Correct Code</title>
+</head>
+
+<body>
+
+<script language="javascript">
+function calculate()
+{
+	with(document.form1)
+	{
+		if(txtName.value == "")
+		{
+			alert("Please enter your name");
+			txtName.focus();
+			return false;	
+		}
+		if(txtEmail.value == "")
+		{
+			alert("Please enter your email address");
+			txtEmail.focus();
+			return false;	
+		}
+		email = txtEmail.value;
+		dot = email.lastIndexOf(".");
+		at = email.indexOf("@");
+		invalid = false;
+		if (dot == -1 || at == -1)
+			invalid = true;
+		if(at > dot)
+		invalid = true;
+		if(email.length - dot <= 2)
+		invalid = true;
+		if(invalid)
+		{
+			alert("Invalid email address");
+			txtEmail.focus();
+			return false;	
+		}
+			
+		if(txtAmount.value == "")
+		{
+			alert("Please enter your loan amount");
+			txtAmount.focus();
+			return false;	
+		}
+		if (isNaN(txtAmount.value))
+		{
+			alert("Loan amount must be a number");
+			txtAmount.focus();
+			return false;
+			
+		}
+		if(!chkPrivacy.checked)
+		{
+			alert("You must accept privacy");
+			chkPrivacy.focus();
+			return false;	
+		}
+		
+		
+	}
+	//validates - now do the calculation
+		with(document.form1)
+		{
+			amount = parseFloat(txtAmount.value);
+			if(rdoTerm[0].checked)
+				term = 15;
+			else if(rdoTerm[1].checked)
+				term = 20;
+			else(rdoTerm[2].checked)
+				term = 30;
+			months = term * 12;
+			rate = .0375/12;
+			//formula: P=L[c(1+c)n]/(1+c)n-1]
+			//n = months
+			//c=rate
+			//L= loan amount
+			paymt = amount * (rate * Math.pow((1 + rate), term)) / (Math.pow((1 + rate), term-1));
+			alert("Monthly Payment: " + paymt.toFixed(2));
+		}
+	
+}
+
+
+
+
+</script>
+
+
+<form name="form1" name="form1" method="post" action="" onsubmit="return calculate(); return false;">
+  <p>Name*: <input type="text" name="txtName" id="txtName">
+  </p>
+  <p>Email*: <input type="text" name="txtEmail" id="txtEmail">
+  </p>
+  <p>Loan Amount*: $<input type="text" name="txtAmount" id="txtAmount">
+  </p>
+  <p>Length of Loan*: 
+  <input type="radio" name="rdoTerm" id="rdoTerm" value="15" > 15yr 
+  <input type="radio" name="rdoTerm" id="rdoTerm2" value="20" > 20yr 
+  <input type="radio" name="rdoTerm" id="rdoTerm3" value="30" checked = "checked"> 30yr
+  </p>
+  <p>
+   <input type="checkbox" name="chkPrivacy" id="chkPrivacy">Accept the terms of the company&rsquo;s &ldquo;privacy policy&rdquo; <br>
+  </p>
+  <p><input type="submit" name="button" value="Calculate" ></p>
+</form>
+
+
+
+
+</body>
+</html>

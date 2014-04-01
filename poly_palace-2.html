@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<script language="javascript">
+function MenuItem(name, cost)
+{
+	this.name = name;
+	this.cost=cost;
+}
+
+menuItems = new Array(
+				new MenuItem("Chicken Chop Suey", 4.5),
+				new MenuItem("Sweet and Sour Pork", 6.25),
+				new MenuItem("Shrimp Lo Mein", 5.25),
+				new MenuItem("Moo Shi Chicken", 6.5),
+				new MenuItem("Fried Rice", 2.35)
+				);
+
+function getSelectedIndex(name)
+{
+	index = eval("document.takeout." + name + ".selectedIndex");
+	return index;
+}
+
+function validate()
+{
+	with (document.takeout)
+	{
+		if (lname.value == "")
+		{
+			alert("Must supply your last name");
+			lname.focus();
+			return false;
+		}
+		if (phone.value == "")
+		{
+			alert("Must supply your phone number");
+			phone.focus();
+			return false;
+		}
+		if (pORd[1].checked)  // must be delivery
+		{
+			if (street.value == ""  || city.value == "")
+			{
+				alert("Must supply your complete address if you want us to deliver");
+				street.focus();
+				return false;
+			}
+		}  //end delivery
+		itemSelected = false;
+		for (i=0; i<menuItems.length; i++)
+		{
+			if (getSelectedIndex("quan" + i) > 0) 
+				itemSelected=true;
+		}
+		if (!itemSelected)
+		{
+			alert("Must order at least one item");
+			quan0.focus();
+			return false;
+		}
+	} // end with
+	subtot = 0;
+	for (i=0; i<menuItems.length; i++)
+	{
+		quantity = getSelectedIndex("quan" +i)
+		if (quantity == 0) 
+			continue;
+		totalCost = quantity * menuItems[i].cost;
+		t = eval("document.takeout.cost" + i);
+		t.value = totalCost.toFixed(2);
+		subtot += totalCost;
+	}
+	
+	subtotal.value = subtot;
+	tax.value = subtot * .0625;
+	total.value = subtot * 1.0625;
+	
+	return confirm("About to submit order - are you sure?");
+}  //end validate
+</script>
+<form name='takeout'  onsubmit = "return validate()">
+
+<p>First Name: <input type="text"  name='fname' /></p>
+<p>Last Name*:  <input type="text"  name='lname' /></p>
+<p>Street: <input type="text"  name='street' /></p>
+<p>City: <input type="text"  name='city' /></p>
+<p>Phone*: <input type="text"  name='phone' /></p>
+<p> <input type="radio"  name='pORd' value = 'pickup' checked='checked'/>Pickup  <input type="radio"  name='pORd' value = 'delivery'/>
+Delivery </p>
+<table border="1" cellpadding="3">
+  <tr>
+    <td><strong>Select Item</strong></td>
+    <td><strong>Item Name</strong></td>
+    <td><strong>Cost Each</strong></td>
+    <td><strong>Total Cost</strong></td>
+  </tr>
+<script language="javascript">
+function makeSelect(name)
+{
+	var t= "";
+	t = "<select name='" + name + "' size='1'>";
+	for (j=0; j<=10; j++)
+	   t += "<option>" + j + "</option>";
+	t+= "</select>"; 
+	return t;
+}
+
+  var s = "";
+  for (i=0; i< menuItems.length; i++)
+  {
+	  s += "<tr>";
+	  s += "<td>";
+	  s += makeSelect("quan" + i);
+	  s += "</td>";
+	  s += "<td>" + menuItems[i].name + "</td>";
+	  s += "<td> $ " + menuItems[i].cost.toFixed(2) + "</td>";	  
+	  s += "<td>$<input type = 'text' name='cost" + i + "'/></td>";	
+	  s += "</tr>"
+	  s += "\n";  
+  }
+  document.write(s);
+</script>
+</table>
+<p>Subtotal: 
+   $
+   <input type="text"  name='subtotal' id="subtotal" />
+</p>
+<p>Mass tax 6.25%:
+  $ 
+  <input type="text"  name='tax' id="tax" />
+</p>
+<p>Total: $ 
+  <input type="text"  name='total' id="total" />
+</p>
+
+<input type = "submit" value = "Submit Order" />
+
+</form>
+</body>
+</html>

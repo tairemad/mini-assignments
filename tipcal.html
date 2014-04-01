@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Extra Credit #1</title>
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/jquery.lavalamp.js"></script>
+<script type="text/javascript" src="js/jquery.easing.js"></script>
+
+<script type="text/javascript">
+    $(function() { $(".lavaLamp").lavaLamp({ fx: "backout", speed: 700 })});
+</script>
+
+<!--//Program Name: Tip Calculator
+//Purpose: Calculate tips 
+//Author: Tairema Dailey
+//Date Last Modified: March 9, 2012
+-->
+</head>
+
+<body>
+<div id="wrapper">
+
+<section>
+<article>
+
+
+<div class="top">Extra Credit</div>
+<div class="section">
+
+
+
+
+
+<script type="text/javascript">
+//sets variable for the form created in body 
+var tipForm = document.forms["tipCal"];
+
+//array sets value for drop down in tip section
+
+var tipsAmount= new Array();
+tipsAmount["None"]=0;
+tipsAmount["15"]=.15;
+tipsAmount["18"]=.18;
+tipsAmount["20"]=.20;
+tipsAmount["25"]=.25;
+
+//This function finds the tip amount based on the drop down selection
+function getTipAmount()
+{
+    var selectedTipAmount= 0;
+    //Get a reference to the form id="tipCal"
+    var tipForm = document.forms["tipCal"];
+    var selectedTip = tipForm.elements["tips"];
+    //set tip amount equal to value user chose
+    selectedTipAmount = tipsAmount[selectedTip.value];
+    //finally we return selected tip amount
+    return selectedTipAmount;
+}
+
+
+
+//array sets value for drop down in tax section
+
+var taxAmount= new Array();
+taxAmount["None"]=0;
+taxAmount["MA"]=.0625;
+taxAmount["RI"]=.07;
+taxAmount["NH"]=.09;
+taxAmount["VT"]=.06;
+
+//This function finds the tax amount based on the drop down selection
+function getTaxAmount()
+{
+    var selectedTaxAmount= 0;
+    //Get a reference to the form id="tipCal"
+    var tipForm = document.forms["tipCal"];
+    var selectedTax = tipForm.elements["tax"];
+    //set tip amount equal to value user chose
+	var ownTax = tipForm.elements["ownTax"];
+	//conditional if owntax entered is not blank then set selectedtaxamount to that value if is blank set to drop down tax amount as value
+	if(ownTax.value!="")
+    {
+        selectedTaxAmount = parseFloat(ownTax.value);
+    }
+	else
+	{
+
+     selectedTaxAmount = taxAmount[selectedTax.value];
+	}
+    //finally we return selected tax amount
+    return selectedTaxAmount;
+}
+
+//function to get the bill amount user entered
+function getBill()
+{
+    //still using form with id="tipCal"
+    var tipForm = document.forms["tipCal"];
+    //pulls value user entered in bill section
+    var bill = tipForm.elements["bill"];
+	//sets var bill value to new var howmuch
+	var howMuch = 0;
+    howMuch = parseFloat(bill.value);
+return howMuch;
+}
+
+
+
+//functon to get the totals
+
+function getBillTotal()
+{
+    //Here we get the total price by calling our function
+    //Each function returns a number so we want to calculate them all together
+    var totalBillAmount = parseFloat((getBill()  * getTaxAmount() )  + (getBill() * getTipAmount()) + getBill()).toFixed(2);
+    //display the result
+    document.getElementById('totalBill').innerHTML = "Total bill $"+totalBillAmount + " &hearts; " +  "&nbsp; Bill entered: $" + getBill() + "<p></p>Tax: $" + (getTaxAmount() * getBill()).toFixed(2)  + " &hearts; " + "&nbsp; Tip selected: " + (getTipAmount() * 100) + "%";
+}
+
+//function to reset the form 
+
+function formReset(){
+    document.getElementById('tipCal').reset();
+      
+ } 
+ 
+ //function to reset the figures in totalbill section 
+ function textReset(){
+	 var textReset = getBillTotal().reset();
+	 
+ }
+ 
+ //function taking the two var created above to reset both the form and the totalbill section when user hits the reset button
+ 
+ function totalReset(){
+	 var totalReset = formReset() + textReset();
+	 
+ }
+
+
+
+</script>
+
+
+<div id="ec1block">
+<div class="ec1">
+
+
+<!--creates a form where user will select different options and pull the option value to the functions above-->
+<form action="" id="tipCal" >
+
+<p>Enter the bill amount before tax: <em>Ex. 25.99</em></p>
+
+<!--section to enter the bill amount-->
+<input type="text" name="bill" id="bill"  onsubmit="getBill()" value="">
+
+<!--section to select a tip and tax amount and also give the chose to enter own tax amount-->
+
+<p>Select the tip percentage you want to give:</p>
+
+<select id="tips"  name="tips" onchange="getTipAmount()">
+<option value="0">Please Select One</option>
+<option value="15">15%</option>
+<option value="18">18%</option>
+<option value="20">20%</option>
+<option value="25">25%</option>
+</select>
+
+
+<p>Select the state for tax: </p>
+
+<select id="tax" name="tax" onchange="getTaxAmount()">
+<option value="0">Please Select One</option>
+<option value="MA">MA</option>
+<option value="RI">RI</option>
+<option value="NH">NH</option>
+<option value="VT">VT</option>
+</select>
+
+<p>OR Enter own state tax amount: <em>Ex. .25</em></p>
+<input type="text" name="ownTax" onsubmit="getTaxAmount()" value="">
+
+<br/>
+<p></p>
+
+<input type="button" value="Enter" onClick="getBillTotal()"> 
+<input type="button" value="Reset" onClick="totalReset()"/>
+
+
+
+</form>
+<br />
+<!--div created to output the totals-->
+<div id="totalBill">
+</div>
+
+
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+</article>
+
+
+
+
+</section>
+
+
+
+
+
+</div>
+<footer>&copy;2012 Tairema Dailey</footer>
+
+</body>
+</html>
