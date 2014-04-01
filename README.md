@@ -1,4 +1,4 @@
 mini-assignments
 ================
 
-A bunch of mini assignments using javascript, php, ajax, xml, mysql database
+A bunch of mini assignments using javascript, php, ajax, and mysql database
